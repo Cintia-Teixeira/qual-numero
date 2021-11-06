@@ -42,3 +42,23 @@ form {
     position: absolute;
     right: 16px;
 }
+
+.btn-close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-pipe {
+    position: absolute;
+    font-weight: bold;
+    color: #DB6300;
+}
+
+.close-pipe1 {
+    transform: rotate(45deg);
+}
+
+.close-pipe2 {
+    transform: rotate(135deg);
+}

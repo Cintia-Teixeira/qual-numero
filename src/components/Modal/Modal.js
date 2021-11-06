@@ -7,6 +7,10 @@ class Modal extends React.Component {
         return (
             <div className="modal-container" style={{display: this.props.display}}>
                 <div className="modal" aria-expanded="true">
+                    <div className="btn-close" onClick={this.props.close}>
+                        <span className="close-pipe close-pipe1">|</span>
+                        <span className="close-pipe close-pipe2">|</span>
+                    </div>
                     <p>Escolha um intervalo para o valor a ser gerado:</p>
                     <form onSubmit={this.props.handleModalSubmit}>
                         <div className="input-container">

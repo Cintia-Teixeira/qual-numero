@@ -25,6 +25,7 @@ class App extends React.Component {
     this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.handleMinChange = this.handleMinChange.bind(this);
     this.handleMaxChange = this.handleMaxChange.bind(this);
+    this.closeModal = this.closeModal.bind(this);
   }
 
   handleChange(event) {
@@ -81,16 +82,20 @@ class App extends React.Component {
     this.getValue(this.state.min, this.state.max);
   }
 
-  componentDidMount() {
-    this.getValue();
+  closeModal() {
+      this.setState({modalDisplay: 'none'});
+      this.getValue(1, 300);
   }
 
-  async getValue() { 
-    const minValue = this.state.min;
-    const maxValue = this.state.max;
+  componentDidMount() {
+    this.getValue(this.state.min, this.state.max);
+  }
 
+  async getValue(min, max) { 
+    
     try {
-      await fetch(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${minValue}&max=${maxValue}`)
+      console.log(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`);
+      await fetch(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`)
         .then(response => response.json())
         .then(response => {
             this.setState({value: response.value});
@@ -140,7 +145,7 @@ class App extends React.Component {
           <button className="btn btn-guess" type="submit" disabled={this.state.disabled}>Enviar</button>
           <span className="error" style={{display: this.state.errorDisplay}}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
         </form>
-        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay}/>
+        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} close={this.closeModal}/>
       </div>
     );
   }
