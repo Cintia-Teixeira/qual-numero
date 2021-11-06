@@ -15,6 +15,7 @@
   text-transform: uppercase;
   text-align: center;
   background: -webkit-linear-gradient(174.92deg, #EF6C00 18.47%, #DB6300 36.57%);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 
@@ -51,7 +52,16 @@
 }
 
 .input:focus {
-  border: 1px solid #FF6600;
+  outline-color: #FF6600;
+}
+
+input[type=number]::-webkit-inner-spin-button { 
+  -webkit-appearance: none;
+}
+
+input[type=number] { 
+ -moz-appearance: textfield;
+ appearance: textfield;
 }
 
 .btn {
@@ -60,7 +70,6 @@
   background: linear-gradient(180deg, #EF6C00 0%, #C0661C 100%);
   border-radius: 4px;
   border: none;
-
   font-family: Roboto;
   font-style: normal;
   font-weight: bold;
@@ -93,25 +102,8 @@
 
 .btn-new-game {
   width: 130px;
-  height: 42px;
   align-items: center;
-  font-family: Roboto;
-  font-weight: bold;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #FFFFFF;
   background: linear-gradient(180deg, #434854 0%, #9E9E9E 100%);
-  border-radius: 4px;
-  border: none;
-}
-
-input[type=number]::-webkit-inner-spin-button { 
-  -webkit-appearance: none;
-}
-
-input[type=number] { 
- -moz-appearance: textfield;
- appearance: textfield;
 }
 
 @media screen and (min-width: 768px) {

@@ -11,9 +11,12 @@ class Modal extends React.Component {
         }
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
+        event.preventDefault();
+
         let target = event.target.value;
         
         if(target < 0 || target.length > 3) {
@@ -32,6 +35,17 @@ class Modal extends React.Component {
         } 
     }
 
+    handleSubmit(event) {
+        event.preventDefault();
+
+        let minTarget = event.target[0].value;
+        let maxTarget = event.target[1].value;
+
+        this.setState({errorDisplay: 'none'});
+
+        this.props.handleModalSubmit(minTarget, maxTarget);
+    }
+
     render() {
         return (
             <div className="modal-container" style={{display: this.props.display}}>
@@ -40,8 +54,8 @@ class Modal extends React.Component {
                         <span className="close-pipe close-pipe1">|</span>
                         <span className="close-pipe close-pipe2">|</span>
                     </div>
-                    <p>Escolha um intervalo para o valor a ser gerado:</p>
-                    <form onSubmit={this.props.handleModalSubmit}>
+                    <p className="instruction">Escolha um intervalo para o valor a ser gerado:</p>
+                    <form className="modal-form" onSubmit={this.handleSubmit}>
                         <div className="limits-container">
                             <div className="input-container">
                                 <input className="input input-modal" id="lowerLimit" type="number" value={this.props.min} placeholder="Limite inferior" onChange={this.handleChange}></input>

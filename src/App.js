@@ -17,99 +17,74 @@ class App extends React.Component {
       errorDisplay: 'none'
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.getValue = this.getValue.bind(this);
-    this.cleanContent = this.cleanContent.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
     this.newGame = this.newGame.bind(this);
-    this.handleModalSubmit = this.handleModalSubmit.bind(this);
+    this.cleanContent = this.cleanContent.bind(this);
     this.handleMinChange = this.handleMinChange.bind(this);
     this.handleMaxChange = this.handleMaxChange.bind(this);
+    this.handleModalSubmit = this.handleModalSubmit.bind(this);
     this.closeModal = this.closeModal.bind(this);
-  }
-
-  handleChange(event) {
-    let target = event.target.value;
-
-    if(target < 0 || target.length > 3) {
-      this.setState({errorDisplay: 'block'})
-      return false
-    }
-
-    this.setState({errorDisplay: 'none'})
-
-    if(target.length > 1 && target[0] === '0') {
-      target = target.slice(1)
-    }
-
-    this.setState({guess: target});
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-
-    this.setState({guess: event.target.value,
-      errorDisplay: 'none'});
-
-    this.setState({ledContent: this.state.guess, guess: ''});
-
-    let result = this.state.guess > this.state.value ? 'É menor' : 
-                this.state.guess < this.state.value ? 'É maior' :
-                'Você acertou!!!!'
-    if(result === 'Você acertou!!!!' ) this.setState({btnDisplay: 'flex', disabled: true})
-
-    this.setState({feedback: result});
-  }
-
-  handleMinChange(target) {
-    this.setState({min: target});
-  }
-
-  handleMaxChange(target) {
-    this.setState({max: target});
-  }
-
-  handleModalSubmit(event) {
-    event.preventDefault();
-
-    this.setState({
-      min: event.target[0].value,
-      max: event.target[1].value,
-      modalDisplay: 'none'
-    });
-
-    this.getValue(this.state.min, this.state.max);
-  }
-
-  closeModal() {
-      this.setState({modalDisplay: 'none'});
-      this.getValue(1, 300);
   }
 
   componentDidMount() {
     this.getValue(this.state.min, this.state.max);
   }
 
-  async getValue(min, max) { 
+  async getValue(min, max) {
 
     try {
       await fetch(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`)
         .then(response => response.json())
         .then(response => {
-            this.setState({value: response.value});
-            console.log(this.state.value);
+          this.setState({ value: response.value });
+          console.log(this.state.value);
 
-            if(response.Error) {
-              this.setState({ledContent: response.StatusCode, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none', disabled: true});
-            }
+          if (response.Error) {
+            this.setState({ ledContent: response.StatusCode, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none', disabled: true });
+          }
         })
-    } catch(error) {
-      this.setState({ledContent: 500, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none'});
-    }   
+    } catch (error) {
+      this.setState({ ledContent: 500, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none' });
+    }
+  }
+
+  handleInputChange(event) {
+    let target = event.target.value;
+
+    if (target < 0 || target.length > 3) {
+      this.setState({ errorDisplay: 'block' });
+      return false
+    }
+
+    this.setState({ errorDisplay: 'none' });
+
+    if (target.length > 1 && target[0] === '0') {
+      target = target.slice(1);
+    }
+
+    this.setState({ guess: target });
+  }
+
+  handleGuessSubmit(event) {
+    event.preventDefault();
+
+    this.setState({ guess: event.target.value, errorDisplay: 'none', ledContent: this.state.guess });
+
+    let result = this.state.guess > this.state.value ? 'É menor' :
+      this.state.guess < this.state.value ? 'É maior' :
+        'Você acertou!!!!'
+
+    if (result === 'Você acertou!!!!') {
+      this.setState({ btnDisplay: 'flex', disabled: true });
+    }
+
+    this.setState({ guess: '', feedback: result });
   }
 
   newGame() {
-    this.setState({modalDisplay: 'flex'});
+    this.setState({ modalDisplay: 'flex' });
     this.cleanContent();
   }
 
@@ -124,6 +99,25 @@ class App extends React.Component {
     });
   }
 
+  handleMinChange(target) {
+    this.setState({ min: target });
+  }
+
+  handleMaxChange(target) {
+    this.setState({ max: target });
+  }
+
+  handleModalSubmit(minTarget, maxTarget) {
+
+    this.setState({ min: minTarget, max: maxTarget, modalDisplay: 'none' });
+
+    this.getValue(this.state.min, this.state.max);
+  }
+
+  closeModal() {
+    this.setState({ modalDisplay: 'none' });
+    this.getValue(1, 300);
+  }
 
   render() {
     return (
@@ -131,19 +125,19 @@ class App extends React.Component {
         <h1 className="title">Qual é o número?</h1>
         <span className="line"></span>
         <div className="led-container">
-          <span className="feedback" style={{color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}}>{this.state.feedback}</span>
-          <span style={{color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}}>{this.state.ledContent}</span>
-          <button className="btn-new-game" onClick={this.newGame} style={{display: this.state.btnDisplay}}>
-            <img src="refresh-icon.svg" alt="Nova Partida"/>
+          <span className="feedback" style={{ color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00' }}>{this.state.feedback}</span>
+          <span style={{ color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00' }}>{this.state.ledContent}</span>
+          <button className="btn btn-new-game" onClick={this.newGame} style={{ display: this.state.btnDisplay }}>
+            <img src="refresh-icon.svg" alt="Nova Partida" />
             Nova Partida
           </button>
         </div>
-        <form className="guess-form" onSubmit={this.handleSubmit}>
-          <input className="input" type="number" disabled={this.state.disabled} required value={this.state.guess} onChange={this.handleChange} placeholder="Digite o palpite"/>
+        <form className="guess-form" onSubmit={this.handleGuessSubmit}>
+          <input className="input" type="number" disabled={this.state.disabled} required value={this.state.guess} onChange={this.handleInputChange} placeholder="Digite o palpite" />
           <button className="btn btn-guess" type="submit" disabled={this.state.disabled}>Enviar</button>
-          <span className="error" style={{display: this.state.errorDisplay}}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
+          <span className="error" style={{ display: this.state.errorDisplay }}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
         </form>
-        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} errorDisplay={this.state.errorDisplay} close={this.closeModal}/>
+        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} errorDisplay={this.state.errorDisplay} close={this.closeModal} />
       </div>
     );
   }

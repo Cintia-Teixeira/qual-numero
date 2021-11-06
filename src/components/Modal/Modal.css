@@ -20,12 +20,12 @@
     background: linear-gradient(180deg, #EEEEEE 0%, #FFFFFF 100%);
 }
 
-p {
+.instruction {
     font-weight: bold;
     color: #DB6300;
 }
 
-form {
+.modal-form {
     position: relative;
 }
 
@@ -61,6 +61,7 @@ form {
 }
 
 .close-pipe1 {
+    top: -1px;
     transform: rotate(45deg);
 }
 
