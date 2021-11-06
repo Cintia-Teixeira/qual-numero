@@ -1,0 +1,44 @@
+.modal-container {
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.modal {
+    position: absolute;
+    max-width: 250px;
+    height: 200px;
+    margin: auto;
+    padding: 35px;
+    background: linear-gradient(180deg, #EEEEEE 0%, #FFFFFF 100%);
+}
+
+p {
+    font-weight: bold;
+    color: #DB6300;
+}
+
+form {
+    position: relative;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 15px;
+}
+
+.input-modal {
+    width: 100px;
+}
+
+.btn-modal {
+    position: absolute;
+    right: 16px;
+}

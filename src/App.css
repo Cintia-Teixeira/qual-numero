@@ -36,24 +36,27 @@
 }
 
 .guess-form {
+  width: 298px;
+  height: 74px;
   margin-bottom: 8vh;
-  display: grid;
-  grid-template-columns: 70% 28%;
-  justify-content: space-between;
+  text-align: left;
 }
 
-.guess {
+.input {
+  width: 217px;
   height: 42px;
   border: 1px solid #CFCFCF;
   box-sizing: border-box;
   border-radius: 4px;
 }
-.guess:focus {
 
+.input:focus {
   border: 1px solid #FF6600;
 }
 
 .btn {
+  width: 70px;
+  height: 42px;
   background: linear-gradient(180deg, #EF6C00 0%, #C0661C 100%);
   border-radius: 4px;
   border: none;
@@ -65,6 +68,20 @@
   line-height: 14px;
   color: #FFFFFF;
   text-transform: uppercase;
+}
+
+.btn-guess {
+  margin-left: 11px;
+}
+
+.btn-guess:disabled {
+  background: #DDDDDD;
+}
+
+.error {
+  margin-top: 10px;
+  font-size: 9.5px;
+  color: #FF6600;
 }
 
 .feedback {
@@ -87,6 +104,15 @@
   border: none;
 }
 
+input[type=number]::-webkit-inner-spin-button { 
+  -webkit-appearance: none;
+}
+
+input[type=number] { 
+ -moz-appearance: textfield;
+ appearance: textfield;
+}
+
 @media screen and (min-width: 768px) {
   .App {
     padding: 0;
@@ -102,12 +128,13 @@
   }
   
   .led-container {
-    padding: 20vh 0; 
+    font-size: 125px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .led-container {
+    padding: 0;
     font-size: 160px;
   }
-  
-  .guess-form {
-    bottom: 15vh;
-  }
-  
 }
