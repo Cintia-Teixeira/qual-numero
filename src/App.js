@@ -56,7 +56,7 @@ class App extends React.Component {
     let result = this.state.guess > this.state.value ? 'É menor' : 
                 this.state.guess < this.state.value ? 'É maior' :
                 'Você acertou!!!!'
-    if(result === 'Você acertou!!!!' ) this.setState({btnDisplay: 'inline-block', disabled: true})
+    if(result === 'Você acertou!!!!' ) this.setState({btnDisplay: 'flex', disabled: true})
 
     this.setState({feedback: result});
   }
@@ -97,11 +97,11 @@ class App extends React.Component {
             console.log(this.state.value);
 
             if(response.Error) {
-              this.setState({ledContent: response.StatusCode, feedback: 'ERRO', btnDisplay: 'inline-block', modalDisplay: 'none', disabled: true});
+              this.setState({ledContent: response.StatusCode, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none', disabled: true});
             }
         })
     } catch(error) {
-      this.setState({ledContent: 500, feedback: 'ERRO', btnDisplay: 'inline-block', modalDisplay: 'none'});
+      this.setState({ledContent: 500, feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none'});
     }   
   }
 
@@ -130,7 +130,10 @@ class App extends React.Component {
         <div className="led-container">
           <span className="feedback" style={{color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}}>{this.state.feedback}</span>
           <span style={{color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}}>{this.state.ledContent}</span>
-          <button className="btn-new-game" onClick={this.newGame} style={{display: this.state.btnDisplay}}>Nova Partida</button>
+          <button className="btn-new-game" onClick={this.newGame} style={{display: this.state.btnDisplay}}>
+            <img src="refresh-icon.svg" alt="Nova Partida"/>
+            Nova Partida
+          </button>
         </div>
         <form className="guess-form" onSubmit={this.handleSubmit}>
           <input className="input" type="number" disabled={this.state.disabled} required value={this.state.guess} onChange={this.handleChange} placeholder="Digite o palpite"/>

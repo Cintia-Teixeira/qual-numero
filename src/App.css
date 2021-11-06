@@ -94,6 +94,7 @@
 .btn-new-game {
   width: 130px;
   height: 42px;
+  align-items: center;
   font-family: Roboto;
   font-weight: bold;
   font-size: 12px;
