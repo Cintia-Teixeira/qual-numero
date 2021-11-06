@@ -47,7 +47,6 @@ class App extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log(event.target[0].value);
 
     this.setState({guess: event.target.value,
       errorDisplay: 'none'});
@@ -62,12 +61,12 @@ class App extends React.Component {
     this.setState({feedback: result});
   }
 
-  handleMinChange(event) {
-    this.setState({min: event.target.value});
+  handleMinChange(target) {
+    this.setState({min: target});
   }
 
-  handleMaxChange(event) {
-      this.setState({max: event.target.value});
+  handleMaxChange(target) {
+    this.setState({max: target});
   }
 
   handleModalSubmit(event) {
@@ -92,9 +91,8 @@ class App extends React.Component {
   }
 
   async getValue(min, max) { 
-    
+
     try {
-      console.log(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`);
       await fetch(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`)
         .then(response => response.json())
         .then(response => {
@@ -145,7 +143,7 @@ class App extends React.Component {
           <button className="btn btn-guess" type="submit" disabled={this.state.disabled}>Enviar</button>
           <span className="error" style={{display: this.state.errorDisplay}}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
         </form>
-        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} close={this.closeModal}/>
+        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} errorDisplay={this.state.errorDisplay} close={this.closeModal}/>
       </div>
     );
   }

@@ -16,6 +16,7 @@
     height: 200px;
     margin: auto;
     padding: 35px;
+    text-align: left;
     background: linear-gradient(180deg, #EEEEEE 0%, #FFFFFF 100%);
 }
 
@@ -26,6 +27,10 @@ p {
 
 form {
     position: relative;
+}
+
+.limits-container {
+    height: 85px;
 }
 
 .input-container {
