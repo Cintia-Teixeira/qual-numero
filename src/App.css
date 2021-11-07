@@ -7,7 +7,7 @@
 }
 
 .title {
-  margin: 8vh 0 5px;
+  margin: 62px 0 5px;
   font-weight: bold;
   font-size: 24px;
   line-height: 29px;
@@ -33,7 +33,6 @@
   padding: 5vh 0;
   text-align: center;
   align-items: center;
-  font-size: 100px;
 }
 
 .guess-form {
@@ -94,6 +93,7 @@ input[type=number] {
 }
 
 .feedback {
+  margin-bottom: 25px;
   font-size: 16px;
   font-weight: bold;
   letter-spacing: -1px;
@@ -102,12 +102,13 @@ input[type=number] {
 
 .btn-new-game {
   width: 130px;
+  margin: 50px 0;
   align-items: center;
   background: linear-gradient(180deg, #434854 0%, #9E9E9E 100%);
 }
 
 @media screen and (min-width: 768px) {
-  .App {
+  .App, .led-container {
     padding: 0;
   }
   
@@ -119,15 +120,18 @@ input[type=number] {
   .line {
     width: 255px;
   }
-  
-  .led-container {
-    font-size: 125px;
-  }
 }
 
-@media screen and (min-width: 1024px) {
-  .led-container {
-    padding: 0;
-    font-size: 160px;
+@media (orientation: landscape) and (max-width: 823px) {
+  .title {
+    margin: 6vh 0 5px;
+  }
+
+  .feedback {
+    margin-bottom: 2px;
+  }
+
+  .btn-new-game {
+    margin: 10px 0 0;
   }
 }
