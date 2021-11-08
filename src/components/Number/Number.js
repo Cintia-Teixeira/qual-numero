@@ -1,6 +1,11 @@
 import React from "react";
 import './Number.css';
 
+/** 
+ * Para a exibição dos números no LED, é utilizado um SVG, cuja propriedade fill de cada path é manipulada com o estado do componente.
+ * Quando o componente é montado, é chamada a função setNumber(), que colore os segmentos de acordo com o número recebido.   
+ */
+
 class Number extends React.Component {
 
     constructor(props) {
@@ -21,99 +26,65 @@ class Number extends React.Component {
         this.setNumber(this.props.number);
     }
 
-    setNumber(number) {
+    setColor(arr) {
         let color = '#262A34';
         let obj = this.state;
-
+        
         if (this.props.color) {
             color = this.props.color;
         }
 
+        this.setState(Object.keys(obj).map(key => {
+            if (arr.includes(key)) {
+                obj[key] = color;
+            }
+            return obj[key];
+        }));
+    }
+    
+    setNumber(number) {
+
         switch (number) {
 
             case '1':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['right1', 'right2'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['right1', 'right2']);
                 break
 
             case '2':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'right1', 'bottom', 'left2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+
+                this.setColor(['top', 'right1', 'bottom', 'left2', 'center']);
                 break
 
             case '3':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'right1', 'bottom', 'right2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'right1', 'bottom', 'right2', 'center']);
                 break
 
             case '4':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['left1', 'right1', 'right2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['left1', 'right1', 'right2', 'center']);
                 break
 
             case '5':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'left1', 'bottom', 'right2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'left1', 'bottom', 'right2', 'center']);
                 break
 
             case '6':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'left1', 'bottom', 'left2', 'right2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'left1', 'bottom', 'left2', 'right2', 'center']);
                 break
 
             case '7':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'right1', 'right2'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'right1', 'right2']);
                 break
 
             case '8':
-                this.setState(Object.keys(obj).map(key => obj[key] = color));
+                this.setColor(['top', 'left1', 'right1', 'bottom', 'left2', 'right2', 'center']);
                 break
 
             case '9':
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'left1', 'right1', 'bottom', 'right2', 'center'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'left1', 'right1', 'bottom', 'right2', 'center']);
                 break
 
             default:
-                this.setState(Object.keys(obj).map(key => {
-                    if (['top', 'left1', 'right1', 'bottom', 'left2', 'right2'].includes(key)) {
-                        obj[key] = color;
-                    }
-                    return this.state;
-                }));
+                this.setColor(['top', 'left1', 'right1', 'bottom', 'left2', 'right2']);
         }
     }
 
