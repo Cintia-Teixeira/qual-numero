@@ -8,11 +8,17 @@ function Led(props) {
 
         const arr = props.numbers.split('');
 
-        arr.map((number, index) => content.push(<Number number={number} key={`${number}_${index}`} color={props.color} />));
+        content = (
+            <div>
+                {arr.map((number, index) => (<Number number={number} color={props.color} key={`${props.numbers}#${index}`} />))}
+            </div>
+        );
     }
 
     return (
-        <div>{content}</div>
+        <>
+          {content}
+        </>
     )
 
 }

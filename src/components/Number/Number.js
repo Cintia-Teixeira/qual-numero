@@ -1,7 +1,7 @@
 import React from "react";
 import './Number.css';
 
-class Number extends React.PureComponent {
+class Number extends React.Component {
 
     constructor(props) {
         super(props)
