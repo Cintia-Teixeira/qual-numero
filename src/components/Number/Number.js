@@ -3,7 +3,8 @@ import './Number.css';
 
 /** 
  * Para a exibição dos números no LED, é utilizado um SVG, cuja propriedade fill de cada path é manipulada com o estado do componente.
- * Quando o componente é montado, é chamada a função setNumber(), que colore os segmentos de acordo com o número recebido.   
+ * Quando o componente é montado, é chamada a função setNumber() para definir os parâmetros a serem passados para a função setColor(),
+ * de acordo com o número recebido, para colorir os segmentos.   
  */
 
 class Number extends React.Component {
@@ -26,6 +27,7 @@ class Number extends React.Component {
         this.setNumber(this.props.number);
     }
 
+    // recebe o array com os segmentos a serem coloridos e mapeia o estado buscando-os e definindo a cor
     setColor(arr) {
         let color = '#262A34';
         let obj = this.state;

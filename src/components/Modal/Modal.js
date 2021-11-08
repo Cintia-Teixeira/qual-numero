@@ -1,6 +1,10 @@
 import React from "react";
 import './Modal.css'
 
+/**
+ * O usuário pode definir um novo intervalo para o jogo ou simplesmente fechar a modal e manter o intervalo padrão, de 1 a 300. 
+ */
+
 class Modal extends React.Component {
 
     constructor(props) {
@@ -19,6 +23,7 @@ class Modal extends React.Component {
 
         let target = event.target.value;
         
+        // exibe uma mensagem de erro caso o palpite colocado no input seja negativo ou com mais de 3 algarismos
         if(target < 0 || target.length > 3) {
             this.setState({errorDisplay: 'block'})
             return false

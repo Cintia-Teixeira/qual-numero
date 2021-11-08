@@ -54,6 +54,7 @@ class App extends React.Component {
   handleInputChange(event) {
     let target = event.target.value;
 
+    // exibe uma mensagem de erro caso o palpite colocado no input seja negativo ou com mais de 3 algarismos
     if (target < 0 || target.length > 3) {
       this.setState({ errorDisplay: 'block' });
       return false
@@ -61,6 +62,7 @@ class App extends React.Component {
 
     this.setState({ errorDisplay: 'none' });
 
+    // retira o primeiro algarismo do número a ser exibido no LED caso o palpite inserido pelo usuário tiver mais de um algarismo e o primeiro for 0 
     if (target.length > 1 && target[0] === '0') {
       target = target.slice(1);
     }
@@ -73,6 +75,7 @@ class App extends React.Component {
 
     this.setState({ guess: event.target.value, errorDisplay: 'none', ledContent: this.state.guess });
 
+    // compara o palpite com o valor aleatório e define o feedback a ser dado ao usuário
     let result = this.state.guess > this.state.value ? 'É menor' :
       this.state.guess < this.state.value ? 'É maior' :
         'Você acertou!!!!'
@@ -115,6 +118,7 @@ class App extends React.Component {
     this.getValue(this.state.min, this.state.max);
   }
 
+  // se a modal for fechada, a nova partida terá o intervalo padrão, de 1 a 300
   closeModal() {
     this.setState({ modalDisplay: 'none' });
     this.getValue(1, 300);
