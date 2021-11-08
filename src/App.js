@@ -12,7 +12,7 @@ class App extends React.Component {
       feedback: '',
       min: 1,
       max: 300,
-      btnDisplay: 'none',
+      showBtn: 0,
       modalDisplay: 'none',
       disabled: false,
       errorDisplay: 'none'
@@ -43,11 +43,11 @@ class App extends React.Component {
           console.log(this.state.value);
 
           if (response.Error) {
-            this.setState({ ledContent: response.StatusCode.toString(), feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none', disabled: true });
+            this.setState({ ledContent: response.StatusCode.toString(), feedback: 'ERRO', showBtn: 1, modalDisplay: 'none', disabled: true });
           }
         })
     } catch (error) {
-      this.setState({ ledContent: '500', feedback: 'ERRO', btnDisplay: 'flex', modalDisplay: 'none' });
+      this.setState({ ledContent: '500', feedback: 'ERRO', showBtn: 1, modalDisplay: 'none' });
     }
   }
 
@@ -78,7 +78,7 @@ class App extends React.Component {
         'Você acertou!!!!'
 
     if (result === 'Você acertou!!!!') {
-      this.setState({ btnDisplay: 'flex', disabled: true });
+      this.setState({ showBtn: 1, disabled: true });
     }
 
     this.setState({ guess: '', feedback: result });
@@ -93,7 +93,7 @@ class App extends React.Component {
     this.setState({
       feedback: '',
       ledContent: '0',
-      btnDisplay: 'none',
+      showBtn: 0,
       min: '',
       max: '',
       disabled: false
@@ -127,9 +127,8 @@ class App extends React.Component {
         <span className="line"></span>
         <div className="led-container">
           <span className="feedback" style={{ color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00' }}>{this.state.feedback}</span>
-          {/* <span style={{ color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00' }}>{this.state.ledContent}</span> */}
           <Led numbers={this.state.ledContent} color={this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}/>
-          <button className="btn btn-new-game" onClick={this.newGame} style={{ display: this.state.btnDisplay }}>
+          <button className="btn btn-new-game" onClick={this.newGame} style={{ opacity: this.state.showBtn }}>
             <img src="refresh-icon.svg" alt="Nova Partida" />
             Nova Partida
           </button>

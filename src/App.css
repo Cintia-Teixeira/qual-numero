@@ -38,7 +38,7 @@
 .guess-form {
   width: 298px;
   height: 74px;
-  margin-bottom: 8vh;
+  margin-bottom: 2vh;
   text-align: left;
 }
 
@@ -101,6 +101,7 @@ input[type=number] {
 }
 
 .btn-new-game {
+  display: flex;
   width: 130px;
   margin: 50px 0;
   align-items: center;
