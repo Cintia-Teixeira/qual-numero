@@ -19,12 +19,20 @@ class Number extends React.Component {
             bottom: '#DDDDDD',
             left2: '#DDDDDD',
             right2: '#DDDDDD',
-            center: '#DDDDDD'
+            center: '#DDDDDD', 
+            width: '56px',
+            height: '100px'
         }
     }
 
     componentDidMount() {
         this.setNumber(this.props.number);
+
+
+        // aumenta o tamanho dos algarismos se a largura da tela for maior ou igual a 768px
+        if(process.browser && window.innerWidth >= 768) {
+            this.setState({width: '75px', height: '135px'});
+        }
     }
 
     // recebe o array com os segmentos a serem coloridos e mapeia o estado buscando-os e definindo a cor
@@ -93,7 +101,7 @@ class Number extends React.Component {
 
     render() {
         return (
-            <svg className="number" width="56" height="100" viewBox="0 0 56 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg className="number" width={this.state.width} height={this.state.height} viewBox="0 0 56 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path id="top" d="M12.7918 10.9848H42.6309L52.9545 1.18126C51.9989 0.442677 50.8034 4.76837e-06 49.5038 4.76837e-06H5.65773C4.36601 4.76837e-06 3.18002 0.436367 2.2276 1.16469L12.7918 10.9848Z" fill={this.state.top} />
                 <path id="left-1" d="M1.27122 2.08556C0.477403 3.06007 0 4.30288 0 5.65694V44.0221C0 46.2212 1.257 48.1229 3.09003 49.0588L11.7352 42.5796V11.8126L1.27122 2.08556Z" fill={this.state.left1} />
                 <path id="right-1" d="M43.4255 12.049V42.5707L52.0707 49.0498C53.9037 48.114 55.1607 46.2123 55.1607 44.0131V5.64801C55.1607 4.30184 54.6888 3.06851 53.9053 2.09794L43.4255 12.049Z" fill={this.state.right1} />
