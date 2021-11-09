@@ -2,10 +2,9 @@ import React from "react";
 import Number from '../Number/Number';
 
 function Led(props) {
-    let content = []
+    let content = [];
 
     if (props.numbers) {
-
 
         // cria um array com os algarismos que formam o número a ser exibido no display
         const arr = props.numbers.split('');
@@ -20,10 +19,9 @@ function Led(props) {
 
     return (
         <>
-          {content}
+            {content}
         </>
     )
-
 }
 
 export default Led;

@@ -1,151 +1,147 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import Led from './components/Led/Led'; 
+import Led from './components/Led/Led';
 import Modal from './components/Modal/Modal';
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: '',
-      guess: '',
-      ledContent: '0',
-      feedback: '',
-      min: 1,
-      max: 300,
-      showBtn: 0,
-      modalDisplay: 'none',
-      disabled: false,
-      errorDisplay: 'none'
-    }
 
-    this.getValue = this.getValue.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleGuessSubmit = this.handleGuessSubmit.bind(this);
-    this.newGame = this.newGame.bind(this);
-    this.cleanContent = this.cleanContent.bind(this);
-    this.handleMinChange = this.handleMinChange.bind(this);
-    this.handleMaxChange = this.handleMaxChange.bind(this);
-    this.handleModalSubmit = this.handleModalSubmit.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-  }
+function App() {
+  const [value, setValue] = useState('');
+  const [guess, setGuess] = useState('');
+  const [ledContent, setLedContent] = useState('0');
+  const [feedback, setFeedback] = useState('');
+  const [min, setMin] = useState(1);
+  const [max, setMax] = useState(300);
+  const [showBtn, setShowBtn] = useState(0);
+  const [modalDisplay, setModalDisplay] = useState('none');
+  const [disabled, setDisabled] = useState(false);
+  const [errorDisplay, setErrorDisplay] = useState('none');
 
-  componentDidMount() {
-    this.getValue(this.state.min, this.state.max);
-  }
+  useEffect(() => {
+    getValue(min, max);
+    // eslint-disable-next-line
+  }, []);
 
-  async getValue(min, max) {
+  async function getValue(min, max) {
 
     try {
       await fetch(`https://us-central1-ss-devops.cloudfunctions.net/rand?min=${min}&max=${max}`)
         .then(response => response.json())
         .then(response => {
-          this.setState({ value: response.value });
-          console.log(this.state.value);
+          setValue(response.value);
 
           if (response.Error) {
-            this.setState({ ledContent: response.StatusCode.toString(), feedback: 'ERRO', showBtn: 1, modalDisplay: 'none', disabled: true });
+            setFeedback('ERRO');
+            setLedContent(response.StatusCode.toString());
+            setShowBtn(1);
+            setModalDisplay('none');
+            setDisabled(true);
           }
         })
     } catch (error) {
-      this.setState({ ledContent: '500', feedback: 'ERRO', showBtn: 1, modalDisplay: 'none' });
+      setFeedback('ERRO');
+      setLedContent('500');
+      setShowBtn(1);
+      setModalDisplay('none');
     }
   }
 
-  handleInputChange(event) {
+  function handleInputChange(event) {
     let target = event.target.value;
 
     // exibe uma mensagem de erro caso o palpite colocado no input seja negativo ou com mais de 3 algarismos
     if (target < 0 || target.length > 3) {
-      this.setState({ errorDisplay: 'block' });
+      setErrorDisplay('block');
       return false
     }
 
-    this.setState({ errorDisplay: 'none' });
+    setErrorDisplay('none');
 
     // retira o primeiro algarismo do número a ser exibido no LED caso o palpite inserido pelo usuário tiver mais de um algarismo e o primeiro for 0 
     if (target.length > 1 && target[0] === '0') {
       target = target.slice(1);
     }
 
-    this.setState({ guess: target });
+    setGuess(target);
   }
 
-  handleGuessSubmit(event) {
+  function handleGuessSubmit(event) {
     event.preventDefault();
 
-    this.setState({ guess: event.target.value, errorDisplay: 'none', ledContent: this.state.guess });
+    setGuess(event.target.value);
+    setErrorDisplay('none');
+    setLedContent(guess);
 
     // compara o palpite com o valor aleatório e define o feedback a ser dado ao usuário
-    let result = this.state.guess > this.state.value ? 'É menor' :
-      this.state.guess < this.state.value ? 'É maior' :
+    let result = guess > value ? 'É menor' :
+      guess < value ? 'É maior' :
         'Você acertou!!!!'
 
     if (result === 'Você acertou!!!!') {
-      this.setState({ showBtn: 1, disabled: true });
+      setShowBtn(1);
+      setDisabled(true);
     }
 
-    this.setState({ guess: '', feedback: result });
+    setGuess('');
+    setFeedback(result);
   }
 
-  newGame() {
-    this.setState({ modalDisplay: 'flex' });
-    this.cleanContent();
+  function newGame() {
+    setModalDisplay('flex');
+    cleanContent();
   }
 
-  cleanContent() {
-    this.setState({
-      feedback: '',
-      ledContent: '0',
-      showBtn: 0,
-      min: '',
-      max: '',
-      disabled: false
-    });
+  function cleanContent() {
+    setFeedback('');
+    setLedContent('0');
+    setShowBtn(0);
+    setMin('');
+    setMax('');
+    setDisabled(false);
   }
 
-  handleMinChange(target) {
-    this.setState({ min: target });
+  function handleMinChange(target) {
+    setMin(target);
   }
 
-  handleMaxChange(target) {
-    this.setState({ max: target });
+  function handleMaxChange(target) {
+    setMax(target);
   }
 
-  handleModalSubmit(minTarget, maxTarget) {
+  function handleModalSubmit(minTarget, maxTarget) {
 
-    this.setState({ min: minTarget, max: maxTarget, modalDisplay: 'none' });
+    setMin(minTarget);
+    setMax(maxTarget);
+    setModalDisplay('none');
 
-    this.getValue(this.state.min, this.state.max);
+    getValue(min, max);
   }
 
   // se a modal for fechada, a nova partida terá o intervalo padrão, de 1 a 300
-  closeModal() {
-    this.setState({ modalDisplay: 'none' });
-    this.getValue(1, 300);
+  function closeModal() {
+    setModalDisplay('none');
+    getValue(1, 300);
   }
 
-  render() {
-    return (
-      <div className="App">
-        <h1 className="title">Qual é o número?</h1>
-        <span className="line"></span>
-        <div className="led-container">
-          <span className="feedback" style={{ color: this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00' }}>{this.state.feedback}</span>
-          <Led numbers={this.state.ledContent} color={this.state.feedback.match(/Erro/gi) ? '#CC3300' : this.state.feedback.match(/acertou/gi) && '#32BF00'}/>
-          <button className="btn btn-new-game" onClick={this.newGame} style={{ opacity: this.state.showBtn }}>
-            <img src="refresh-icon.svg" alt="Nova Partida" />
-            Nova Partida
-          </button>
-        </div>
-        <form className="guess-form" onSubmit={this.handleGuessSubmit}>
-          <input className="input" type="number" disabled={this.state.disabled} required value={this.state.guess} onChange={this.handleInputChange} placeholder="Digite o palpite" />
-          <button className="btn btn-guess" type="submit" disabled={this.state.disabled}>Enviar</button>
-          <span className="error" style={{ display: this.state.errorDisplay }}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
-        </form>
-        <Modal handleModalSubmit={this.handleModalSubmit} handleMinChange={this.handleMinChange} handleMaxChange={this.handleMaxChange} min={this.state.min} max={this.state.max} display={this.state.modalDisplay} errorDisplay={this.state.errorDisplay} close={this.closeModal} />
+  return (
+    <div className="App">
+      <h1 className="title">Qual é o número?</h1>
+      <span className="line"></span>
+      <div className="led-container">
+        <span className="feedback" style={{ color: feedback.match(/Erro/gi) ? '#CC3300' : feedback.match(/acertou/gi) && '#32BF00' }}>{feedback}</span>
+        <Led numbers={ledContent} color={feedback.match(/Erro/gi) ? '#CC3300' : feedback.match(/acertou/gi) && '#32BF00'} />
+        <button className="btn btn-new-game" onClick={newGame} style={{ opacity: showBtn }}>
+          <img src="refresh-icon.svg" alt="Nova Partida" />
+          Nova Partida
+        </button>
       </div>
-    );
-  }
+      <form className="guess-form" onSubmit={handleGuessSubmit}>
+        <input className="input" type="number" disabled={disabled} required value={guess} onChange={handleInputChange} placeholder="Digite o palpite" />
+        <button className="btn btn-guess" type="submit" disabled={disabled}>Enviar</button>
+        <span className="error" style={{ display: errorDisplay }}>* Atenção, são permitidos apenas números não-negativos de 1 a 3 algarismos.</span>
+      </form>
+      <Modal handleModalSubmit={handleModalSubmit} handleMinChange={handleMinChange} handleMaxChange={handleMaxChange} min={min} max={max} display={modalDisplay} errorDisplay={errorDisplay} close={closeModal} />
+    </div>
+  );
+
 }
 
 export default App;
